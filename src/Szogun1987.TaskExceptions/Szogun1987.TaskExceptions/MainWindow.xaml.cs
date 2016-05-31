@@ -44,7 +44,7 @@ namespace Szogun1987.TaskExceptions
         {
             var completionSource = new TaskCompletionSource<bool>();
 
-            new Thread(p => completionSource.SetException(new Exception()));
+            new Thread(p => completionSource.SetException(new Exception())).Start();
 
             return completionSource.Task;
         }
