@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -16,17 +17,36 @@ namespace Szogun1987.TaskExceptions
 
         private async void WithAwait_Click(object sender, RoutedEventArgs e)
         {
-            await ThrowException();
+            await ThrowExceptioAsync();
         }
 
         private void WithoutAwait_Click(object sender, RoutedEventArgs e)
         {
-            ThrowException();
+            ThrowExceptioAsync();
         }
 
-        private Task ThrowException()
+        private async void WithAwaitAndCompletionSource_Click(object sender, RoutedEventArgs e)
+        {
+            await ThrowExceptionTaskCompletionSourceAsync();
+        }
+
+        private void WithoutAwaitButWithCompletionSource_Click(object sender, RoutedEventArgs e)
+        {
+            ThrowExceptionTaskCompletionSourceAsync();
+        }
+
+        private Task ThrowExceptioAsync()
         {
             return Task.Run(() => { throw new Exception(); });
+        }
+
+        private Task ThrowExceptionTaskCompletionSourceAsync()
+        {
+            var completionSource = new TaskCompletionSource<bool>();
+
+            new Thread(p => completionSource.SetException(new Exception()));
+
+            return completionSource.Task;
         }
 
         private void GCCollect_Click(object sender, RoutedEventArgs e)
