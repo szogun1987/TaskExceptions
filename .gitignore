@@ -1,3 +1,7 @@
 # build artifacts
 [Bb]in/
 [Oo]bj/
+
+# User files
+*.suo
+*.user
